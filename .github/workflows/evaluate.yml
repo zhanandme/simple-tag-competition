@@ -137,6 +137,10 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
+          # Checkout main branch
+          git fetch origin main
+          git checkout main
+          
           git add results/
           git add docs/index.html
           
@@ -144,7 +148,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Add evaluation results for ${{ steps.submission.outputs.username }}"
-            git push origin HEAD:main
+            git push origin main
           fi
       
       - name: Comment on PR with results
@@ -171,14 +175,16 @@ jobs:
             
             ### Next Steps
             
-            Your submission has been evaluated!
+            ✅ Your submission has been evaluated and added to the leaderboard!
             
-            Check the [live leaderboard](https://${context.repo.owner}.github.io/${context.repo.repo}/) to see your ranking.
+            📊 Check the [live leaderboard](https://${context.repo.owner}.github.io/${context.repo.repo}/) to see your ranking.
             
-            Want to improve your score? Feel free to submit a new PR with an updated agent!
+            🚀 Want to improve your score? Submit a new PR with an updated agent!
+            
+            **Note:** This PR will not be merged. Your score has been recorded on the main branch automatically.
             
             ---
-            *This evaluation was performed automatically. Score is average predator reward over 500 episodes against the public reference prey.*
+            *Evaluation: 500 episodes against public reference prey with deterministic seeding.*
             `;
             
             github.rest.issues.createComment({
